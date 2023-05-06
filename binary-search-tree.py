@@ -89,45 +89,43 @@ class BinarySearchTree:
             node = node.right_child
         return node
            
-    def delete(self, data, node=None):
+    def delete(self, target, node=None):
         # initialize with the root node
         if node is None:
             node = self.root
         
         if node is None:
-            # the tree is empty, nothing to delete
+            # if the tree is empty then there is nothing to delete
             return None
         
-        if data < node.data:
+        if target < node.data:
+            # If target is less than the current node's data then 
             # the data we want to delete is in the left subtree
-            node.left_child = self.delete(data, node.left_child)
-        elif data > node.data:
+            node.left_child = self.delete(target, node.left_child)
+        elif target > node.data:
+            # If target is greater than the current node's data then 
             # the data we want to delete is in the right subtree
-            node.right_child = self.delete(data, node.right_child)
+            node.right_child = self.delete(target, node.right_child)
         else:
-            # node contains the data we want to delete
-            
-            # case 1: node is a leaf (no children)
+            # Otherwise, the current node contains the data we want to delete
+            # Case 1: the current node is a leaf and has no children
             if node.left_child is None and node.right_child is None:
                 node = None
-            
-            # case 2: node has only one child
+            # Case 2: the current node has only one child
             elif node.left_child is None:
+                # If the current node only has a right child then replace it with the right child
                 node = node.right_child
             elif node.right_child is None:
+                # If the current node only has a left child then replace it with the left child
                 node = node.left_child
-            
-            # case 3: node has two children
+            # Case 3: node has two children
             else:
-                # find the minimum value in the right subtree
+                # Find the node with the minimum value in the current node's right subtree
                 min_node = self.minimum(node.right_child)
-                
-                # replace node's data with the minimum value
+                # Replace the current node node's data with the minimum value
                 node.data = min_node.data
-                
-                # delete the minimum node from the right subtree
+                # Delete the minimum node from the right subtree
                 node.right_child = self.delete(min_node.data, node.right_child)
-        
         return node
     
 bst = BinarySearchTree()
